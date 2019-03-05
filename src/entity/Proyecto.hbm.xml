@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 4, 2019, 5:23:52 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entity.Proyecto" table="PROYECTO" schema="PRUEBA" optimistic-lock="version">
+        <id name="projectid" type="big_decimal">
+            <column name="PROJECTID" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="employee" class="entity.Employee" fetch="select">
+            <column name="LEADERID" precision="22" scale="0" />
+        </many-to-one>
+        <property name="tipo" type="string">
+            <column name="TIPO" length="50" not-null="true" />
+        </property>
+        <property name="nombre" type="string">
+            <column name="NOMBRE" not-null="true" />
+        </property>
+        <property name="budget" type="big_decimal">
+            <column name="BUDGET" precision="16" />
+        </property>
+        <set name="projectemployees" table="PROJECTEMPLOYEE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PROJECTID" precision="22" scale="0" />
+            </key>
+            <one-to-many class="entity.Projectemployee" />
+        </set>
+    </class>
+</hibernate-mapping>

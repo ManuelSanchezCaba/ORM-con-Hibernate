@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 4, 2019, 5:23:52 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entity.Phone" table="PHONE" schema="PRUEBA" optimistic-lock="version">
+        <id name="phoneid" type="big_decimal">
+            <column name="PHONEID" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="employee" class="entity.Employee" fetch="select">
+            <column name="OWNERID" precision="22" scale="0" />
+        </many-to-one>
+        <property name="tipo" type="string">
+            <column name="TIPO" length="20" not-null="true" />
+        </property>
+        <property name="phonenumber" type="string">
+            <column name="PHONENUMBER" not-null="true" />
+        </property>
+        <property name="areacode" type="string">
+            <column name="AREACODE" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

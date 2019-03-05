@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 4, 2019, 5:23:52 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entity.Employee" table="EMPLOYEE" schema="PRUEBA" optimistic-lock="version">
+        <id name="employeeid" type="big_decimal">
+            <column name="EMPLOYEEID" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="address" class="entity.Address" fetch="select">
+            <column name="ADDRESSID" precision="22" scale="0" />
+        </many-to-one>
+        <many-to-one name="employee" class="entity.Employee" fetch="select">
+            <column name="MANAGERID" precision="22" scale="0" />
+        </many-to-one>
+        <property name="firstname" type="string">
+            <column name="FIRSTNAME" not-null="true" />
+        </property>
+        <property name="lastname" type="string">
+            <column name="LASTNAME" not-null="true" />
+        </property>
+        <property name="salary" type="big_decimal">
+            <column name="SALARY" precision="10" />
+        </property>
+        <property name="startdate" type="date">
+            <column name="STARTDATE" length="7" />
+        </property>
+        <property name="enddate" type="date">
+            <column name="ENDDATE" length="7" />
+        </property>
+        <set name="employees" table="EMPLOYEE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="MANAGERID" precision="22" scale="0" />
+            </key>
+            <one-to-many class="entity.Employee" />
+        </set>
+        <set name="proyectos" table="PROYECTO" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="LEADERID" precision="22" scale="0" />
+            </key>
+            <one-to-many class="entity.Proyecto" />
+        </set>
+        <set name="projectemployees" table="PROJECTEMPLOYEE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="EMPLOYEEID" precision="22" scale="0" />
+            </key>
+            <one-to-many class="entity.Projectemployee" />
+        </set>
+        <set name="phones" table="PHONE" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="OWNERID" precision="22" scale="0" />
+            </key>
+            <one-to-many class="entity.Phone" />
+        </set>
+    </class>
+</hibernate-mapping>
