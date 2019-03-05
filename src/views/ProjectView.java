@@ -6,6 +6,10 @@
 
 package views;
 
+import entity.Employee;
+import entity.Proyecto;
+import java.math.BigDecimal;
+
 /**
  *
  * @author mfsan
@@ -57,9 +61,7 @@ public class ProjectView extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "ProjectID", "Type", "Name", "Budget", "LeaderID"
@@ -68,6 +70,11 @@ public class ProjectView extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setText("Agregar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Eliminar");
 
@@ -155,6 +162,15 @@ public class ProjectView extends javax.swing.JFrame {
         
         this.setVisible(false);
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Proyecto p = new Proyecto();
+        p.setProjectid(new BigDecimal(txtProjectID.getText()));
+        p.setTipo(txtType.getText());
+        p.setNombre(txtName.getText());
+        p.setBudget(new BigDecimal(txtBudget.getText()));
+        p.setEmployee(new Employee().getEmployee());
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

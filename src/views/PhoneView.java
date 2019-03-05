@@ -5,6 +5,10 @@
  */
 package views;
 
+import entity.Employee;
+import entity.Phone;
+import java.math.BigDecimal;
+
 /**
  *
  * @author mfsan
@@ -58,9 +62,7 @@ public class PhoneView extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "PhoneID", "Type", "PhoneNumber", "AreaCode", "OwnerID"
@@ -69,6 +71,11 @@ public class PhoneView extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setText("Agregar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Eliminar");
 
@@ -156,6 +163,15 @@ public class PhoneView extends javax.swing.JFrame {
         
         this.setVisible(false);
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Phone ph = new Phone();
+        ph.setPhoneid(new BigDecimal(txtPhoneID.getText()));
+        ph.setTipo(txtType.getText());
+        ph.setPhonenumber(txtPhoneNumber.getText());
+        ph.setAreacode(txtAreaCode.getText());
+        ph.setEmployee(new Employee().getEmployee());
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

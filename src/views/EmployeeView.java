@@ -5,10 +5,12 @@
  */
 package views;
 
+import entity.Address;
 import entity.Employee;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import jpa.JPA;
 
 /**
  *
@@ -78,9 +80,7 @@ public class EmployeeView extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "EmployeeID", "FirstName", "LastName", "Salary", "StartDate", "EndDate", "ManagerID", "AddressID"
@@ -96,6 +96,11 @@ public class EmployeeView extends javax.swing.JFrame {
         });
 
         jButton2.setText("Eliminar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Ver");
 
@@ -202,6 +207,18 @@ public class EmployeeView extends javax.swing.JFrame {
             em.setSalary(new BigDecimal(txtSalary.getText()));
             em.setStartdate(new Date(txtStartDate.getText()));
             em.setEnddate(new Date(txtEndDate.getText()));
+//            em.setEmployee(new Employee().getEmployee());
+//            em.setAddress(new Address());
+            
+            txtEmployeeID.setText("");
+            txtFirstName.setText("");
+            txtLastName.setText("");
+            txtSalary.setText("");
+            txtStartDate.setText("");
+            txtEndDate.setText("");
+            txtEmployeeID.setText("");
+            txtAddressID.setText("");
+            JPA.insert(em);
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
@@ -215,6 +232,34 @@ public class EmployeeView extends javax.swing.JFrame {
         
         this.setVisible(false);
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            Employee em = new Employee();
+            em.setEmployeeid(new BigDecimal(txtEmployeeID.getText()));
+            em.setFirstname(txtFirstName.getText());
+            em.setLastname(txtLastName.getText());
+            em.setSalary(new BigDecimal(txtSalary.getText()));
+            em.setStartdate(new Date(txtStartDate.getText()));
+            em.setEnddate(new Date(txtEndDate.getText()));
+//            em.setEmployee(new Employee().getEmployee());
+//            em.setAddress(new Address());
+            
+            txtEmployeeID.setText("");
+            txtFirstName.setText("");
+            txtLastName.setText("");
+            txtSalary.setText("");
+            txtStartDate.setText("");
+            txtEndDate.setText("");
+            txtEmployeeID.setText("");
+            txtAddressID.setText("");
+            JPA.delete(em);
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

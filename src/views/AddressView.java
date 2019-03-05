@@ -7,8 +7,14 @@ package views;
 
 import entity.Address;
 import java.math.BigDecimal;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import jpa.JPA;
+import jpa.NewHibernateUtil;
+import org.hibernate.Session;
 
 /**
  *
@@ -45,7 +51,7 @@ public class AddressView extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         txtAddressID = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TableAddress = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -71,21 +77,29 @@ public class AddressView extends javax.swing.JFrame {
 
         jLabel6.setText("AddressID");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TableAddress.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
                 "AddressID", "Street", "City", "Province", "Country", "PostCode"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(TableAddress);
 
         jButton2.setText("Eliminar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Ver");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Atras");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -183,6 +197,13 @@ public class AddressView extends javax.swing.JFrame {
             adr.setPostcode(txtPostCode.getText());
             
             JPA.insert(adr);
+            
+            txtAddressID.setText("");
+            txtStreet.setText("");
+            txtCity.setText("");
+            txtProvince.setText("");
+            txtCountry.setText("");
+            txtPostCode.setText("");
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
@@ -196,6 +217,59 @@ public class AddressView extends javax.swing.JFrame {
         
         this.setVisible(false);
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            Address adr = new Address();
+            adr.setAddressid(new BigDecimal(Integer.parseInt(txtAddressID.getText())));
+            adr.setStreet(txtStreet.getText());
+            adr.setCity(txtCity.getText());
+            adr.setProvince(txtProvince.getText());
+            adr.setCountry(txtCountry.getText());
+            adr.setPostcode(txtPostCode.getText());
+            
+            JPA.delete(adr);
+            
+            txtAddressID.setText("");
+            txtStreet.setText("");
+            txtCity.setText("");
+            txtProvince.setText("");
+            txtCountry.setText("");
+            txtPostCode.setText("");
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        while(TableAddress.getRowCount() != 0) {
+            ((DefaultTableModel)TableAddress.getModel()).removeRow(0);
+        }
+        
+        Session session = (Session) NewHibernateUtil.getSessionFactory().openSession();
+        List<Address> ad = session.createCriteria(Address.class).list();
+        
+        if(ad.size() > 0) {
+            Iterator consulta = ad.iterator();
+            while(consulta.hasNext()) {
+                DefaultTableModel tbl = (DefaultTableModel) TableAddress.getModel();
+                Vector datos = new Vector();
+                Address fila = (Address) consulta.next();
+                datos.add(fila.getAddressid());
+                datos.add(fila.getStreet());
+                datos.add(fila.getCity());
+                datos.add(fila.getProvince());
+                datos.add(fila.getCountry());
+                datos.add(fila.getPostcode());
+                tbl.addRow(datos);
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "No hay registros");
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -234,6 +308,7 @@ public class AddressView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable TableAddress;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -245,7 +320,6 @@ public class AddressView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField txtAddressID;
     private javax.swing.JTextField txtCity;
     private javax.swing.JTextField txtCountry;
