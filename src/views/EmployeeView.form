@@ -4,6 +4,8 @@
   <NonVisualComponents>
     <Component class="javax.swing.JProgressBar" name="jProgressBar1">
     </Component>
+    <Component class="javax.swing.JTextField" name="txtEndDate2">
+    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
@@ -51,11 +53,25 @@
                           <Component id="txtFirstName" max="32767" attributes="0"/>
                           <Component id="txtLastName" max="32767" attributes="0"/>
                           <Component id="txtSalary" max="32767" attributes="0"/>
-                          <Component id="txtStartDate" max="32767" attributes="0"/>
-                          <Component id="txtEndDate" max="32767" attributes="0"/>
                           <Component id="txtManagerID" max="32767" attributes="0"/>
                           <Component id="txtAddressID" pref="416" max="32767" attributes="0"/>
                           <Component id="txtEmployeeID" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="txtEndDateD" alignment="0" pref="120" max="32767" attributes="0"/>
+                                  <Component id="txtStartDateD" alignment="0" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="txtStartDateM" pref="120" max="32767" attributes="0"/>
+                                  <Component id="txtEndDateM" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace pref="28" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="txtStartDateY" pref="120" max="32767" attributes="0"/>
+                                  <Component id="txtEndDateY" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -98,12 +114,16 @@
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtStartDate" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtStartDateD" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtStartDateM" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtStartDateY" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtEndDate" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtEndDateD" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtEndDateM" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtEndDateY" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -178,9 +198,12 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtSalary">
     </Component>
-    <Component class="javax.swing.JTextField" name="txtStartDate">
+    <Component class="javax.swing.JTextField" name="txtStartDateD">
+      <Properties>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
+      </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtEndDate">
+    <Component class="javax.swing.JTextField" name="txtEndDateD">
     </Component>
     <Component class="javax.swing.JTextField" name="txtManagerID">
     </Component>
@@ -193,7 +216,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="jTable1">
+        <Component class="javax.swing.JTable" name="TableEmployee">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="8" rowCount="0">
@@ -278,6 +301,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Ver"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButton4">
       <Properties>
@@ -286,6 +312,20 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton4ActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtStartDateM">
+      <Properties>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtStartDateY">
+      <Properties>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtEndDateM">
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtEndDateY">
     </Component>
   </SubComponents>
 </Form>

@@ -9,8 +9,14 @@ import entity.Address;
 import entity.Employee;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import jpa.JPA;
+import jpa.NewHibernateUtil;
+import org.hibernate.Session;
 
 /**
  *
@@ -35,6 +41,7 @@ public class EmployeeView extends javax.swing.JFrame {
     private void initComponents() {
 
         jProgressBar1 = new javax.swing.JProgressBar();
+        txtEndDate2 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -47,16 +54,20 @@ public class EmployeeView extends javax.swing.JFrame {
         txtFirstName = new javax.swing.JTextField();
         txtLastName = new javax.swing.JTextField();
         txtSalary = new javax.swing.JTextField();
-        txtStartDate = new javax.swing.JTextField();
-        txtEndDate = new javax.swing.JTextField();
+        txtStartDateD = new javax.swing.JTextField();
+        txtEndDateD = new javax.swing.JTextField();
         txtManagerID = new javax.swing.JTextField();
         txtAddressID = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TableEmployee = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        txtStartDateM = new javax.swing.JTextField();
+        txtStartDateY = new javax.swing.JTextField();
+        txtEndDateM = new javax.swing.JTextField();
+        txtEndDateY = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(564, 485));
@@ -78,7 +89,9 @@ public class EmployeeView extends javax.swing.JFrame {
 
         jLabel8.setText("AddressID");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        txtStartDateD.setToolTipText("");
+
+        TableEmployee.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -86,7 +99,7 @@ public class EmployeeView extends javax.swing.JFrame {
                 "EmployeeID", "FirstName", "LastName", "Salary", "StartDate", "EndDate", "ManagerID", "AddressID"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(TableEmployee);
 
         jButton1.setText("Agregar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -103,6 +116,11 @@ public class EmployeeView extends javax.swing.JFrame {
         });
 
         jButton3.setText("Ver");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Atras");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -110,6 +128,10 @@ public class EmployeeView extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
+
+        txtStartDateM.setToolTipText("");
+
+        txtStartDateY.setToolTipText("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -134,11 +156,21 @@ public class EmployeeView extends javax.swing.JFrame {
                             .addComponent(txtFirstName)
                             .addComponent(txtLastName)
                             .addComponent(txtSalary)
-                            .addComponent(txtStartDate)
-                            .addComponent(txtEndDate)
                             .addComponent(txtManagerID)
                             .addComponent(txtAddressID, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
-                            .addComponent(txtEmployeeID)))
+                            .addComponent(txtEmployeeID)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txtEndDateD, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                                    .addComponent(txtStartDateD, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addGap(28, 28, 28)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtStartDateM, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                                    .addComponent(txtEndDateM))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtStartDateY, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                                    .addComponent(txtEndDateY)))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(57, 57, 57)
@@ -171,11 +203,15 @@ public class EmployeeView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(txtStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtStartDateD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtStartDateM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtStartDateY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(txtEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtEndDateD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtEndDateM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtEndDateY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -205,20 +241,25 @@ public class EmployeeView extends javax.swing.JFrame {
             em.setFirstname(txtFirstName.getText());
             em.setLastname(txtLastName.getText());
             em.setSalary(new BigDecimal(txtSalary.getText()));
-            em.setStartdate(new Date(txtStartDate.getText()));
-            em.setEnddate(new Date(txtEndDate.getText()));
+            em.setStartdate(new Date(Integer.parseInt(txtStartDateD.getText()), Integer.parseInt(txtStartDateM.getText()), Integer.parseInt(txtStartDateY.getText())));
+            em.setEnddate(new Date(Integer.parseInt(txtEndDateD.getText()), Integer.parseInt(txtEndDateM.getText()), Integer.parseInt(txtEndDateY.getText())));
 //            em.setEmployee(new Employee().getEmployee());
 //            em.setAddress(new Address());
+
+            JPA.insert(em);
             
             txtEmployeeID.setText("");
             txtFirstName.setText("");
             txtLastName.setText("");
             txtSalary.setText("");
-            txtStartDate.setText("");
-            txtEndDate.setText("");
-            txtEmployeeID.setText("");
+            txtStartDateD.setText("");
+            txtStartDateM.setText("");
+            txtStartDateY.setText("");
+            txtEndDateD.setText("");
+            txtEndDateM.setText("");
+            txtEndDateY.setText("");
+            txtManagerID.setText("");
             txtAddressID.setText("");
-            JPA.insert(em);
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
@@ -240,26 +281,61 @@ public class EmployeeView extends javax.swing.JFrame {
             em.setFirstname(txtFirstName.getText());
             em.setLastname(txtLastName.getText());
             em.setSalary(new BigDecimal(txtSalary.getText()));
-            em.setStartdate(new Date(txtStartDate.getText()));
-            em.setEnddate(new Date(txtEndDate.getText()));
-//            em.setEmployee(new Employee().getEmployee());
-//            em.setAddress(new Address());
+            em.setStartdate(new Date(txtStartDateD.getText()));
+            em.setEnddate(new Date(txtEndDateD.getText()));
+            em.setEmployee(new Employee().getEmployee());
+            em.setAddress(new Address());
+            
+            JPA.deleteE(em);
             
             txtEmployeeID.setText("");
             txtFirstName.setText("");
             txtLastName.setText("");
             txtSalary.setText("");
-            txtStartDate.setText("");
-            txtEndDate.setText("");
-            txtEmployeeID.setText("");
+            txtStartDateD.setText("");
+            txtStartDateM.setText("");
+            txtStartDateY.setText("");
+            txtEndDateD.setText("");
+            txtEndDateM.setText("");
+            txtEndDateY.setText("");
+            txtManagerID.setText("");
             txtAddressID.setText("");
-            JPA.delete(em);
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        while(TableEmployee.getRowCount() != 0) {
+            ((DefaultTableModel)TableEmployee.getModel()).removeRow(0);
+        }
+        
+        Session session = (Session) NewHibernateUtil.getSessionFactory().openSession();
+        List<Employee> ad = session.createCriteria(Employee.class).list();
+        
+        if(ad.size() > 0) {
+            Iterator consulta = ad.iterator();
+            while(consulta.hasNext()) {
+                DefaultTableModel tbl = (DefaultTableModel) TableEmployee.getModel();
+                Vector datos = new Vector();
+                Employee fila = (Employee) consulta.next();
+                datos.add(fila.getEmployeeid());
+                datos.add(fila.getFirstname());
+                datos.add(fila.getLastname());
+                datos.add(fila.getSalary());
+                datos.add(fila.getStartdate());
+                datos.add(fila.getEnddate());
+                datos.add(fila.getEmployee());
+                datos.add(fila.getAddress());
+                tbl.addRow(datos);
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "No hay registros");
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -297,6 +373,7 @@ public class EmployeeView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable TableEmployee;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -311,14 +388,18 @@ public class EmployeeView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField txtAddressID;
     private javax.swing.JTextField txtEmployeeID;
-    private javax.swing.JTextField txtEndDate;
+    private javax.swing.JTextField txtEndDate2;
+    private javax.swing.JTextField txtEndDateD;
+    private javax.swing.JTextField txtEndDateM;
+    private javax.swing.JTextField txtEndDateY;
     private javax.swing.JTextField txtFirstName;
     private javax.swing.JTextField txtLastName;
     private javax.swing.JTextField txtManagerID;
     private javax.swing.JTextField txtSalary;
-    private javax.swing.JTextField txtStartDate;
+    private javax.swing.JTextField txtStartDateD;
+    private javax.swing.JTextField txtStartDateM;
+    private javax.swing.JTextField txtStartDateY;
     // End of variables declaration//GEN-END:variables
 }

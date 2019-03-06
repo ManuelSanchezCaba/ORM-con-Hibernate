@@ -8,6 +8,14 @@ package views;
 import entity.Employee;
 import entity.Phone;
 import java.math.BigDecimal;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import jpa.JPA;
+import jpa.NewHibernateUtil;
+import org.hibernate.Session;
 
 /**
  *
@@ -42,7 +50,7 @@ public class PhoneView extends javax.swing.JFrame {
         txtOwnerID = new javax.swing.JTextField();
         txtPhoneID = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TablePhone = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -60,7 +68,7 @@ public class PhoneView extends javax.swing.JFrame {
 
         jLabel5.setText("OwnerID");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TablePhone.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -68,7 +76,7 @@ public class PhoneView extends javax.swing.JFrame {
                 "PhoneID", "Type", "PhoneNumber", "AreaCode", "OwnerID"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(TablePhone);
 
         jButton1.setText("Agregar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -78,8 +86,18 @@ public class PhoneView extends javax.swing.JFrame {
         });
 
         jButton2.setText("Eliminar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Ver");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Atras");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -165,13 +183,77 @@ public class PhoneView extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Phone ph = new Phone();
-        ph.setPhoneid(new BigDecimal(txtPhoneID.getText()));
-        ph.setTipo(txtType.getText());
-        ph.setPhonenumber(txtPhoneNumber.getText());
-        ph.setAreacode(txtAreaCode.getText());
-        ph.setEmployee(new Employee().getEmployee());
+        try {
+            Phone ph = new Phone();
+            ph.setPhoneid(new BigDecimal(txtPhoneID.getText()));
+            ph.setTipo(txtType.getText());
+            ph.setPhonenumber(txtPhoneNumber.getText());
+            ph.setAreacode(txtAreaCode.getText());
+            ph.setEmployee(new Employee().getEmployee());
+            
+            JPA.insert(ph);
+            
+            txtPhoneID.setText("");
+            txtType.setText("");
+            txtPhoneNumber.setText("");
+            txtAreaCode.setText("");
+            txtOwnerID.setText("");
+        } 
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        while(TablePhone.getRowCount() != 0) {
+            ((DefaultTableModel)TablePhone.getModel()).removeRow(0);
+        }
+        
+        Session session = (Session) NewHibernateUtil.getSessionFactory().openSession();
+        List<Phone> ad = session.createCriteria(Phone.class).list();
+        
+        if(ad.size() > 0) {
+            Iterator consulta = ad.iterator();
+            while(consulta.hasNext()) {
+                DefaultTableModel tbl = (DefaultTableModel) TablePhone.getModel();
+                Vector datos = new Vector();
+                Phone fila = (Phone) consulta.next();
+                datos.add(fila.getPhoneid());
+                datos.add(fila.getTipo());
+                datos.add(fila.getPhonenumber());
+                datos.add(fila.getAreacode());
+                datos.add(fila.getEmployee());
+                tbl.addRow(datos);
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "No hay registros");
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            Phone ph = new Phone();
+            ph.setPhoneid(new BigDecimal(txtPhoneID.getText()));
+            ph.setTipo(txtType.getText());
+            ph.setPhonenumber(txtPhoneNumber.getText());
+            ph.setAreacode(txtAreaCode.getText());
+            ph.setEmployee(new Employee().getEmployee());
+            
+            JPA.deletePh(ph);
+            
+            txtPhoneID.setText("");
+            txtType.setText("");
+            txtPhoneNumber.setText("");
+            txtAreaCode.setText("");
+            txtOwnerID.setText("");
+        } 
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -209,6 +291,7 @@ public class PhoneView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable TablePhone;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -219,7 +302,6 @@ public class PhoneView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField txtAreaCode;
     private javax.swing.JTextField txtOwnerID;
     private javax.swing.JTextField txtPhoneID;

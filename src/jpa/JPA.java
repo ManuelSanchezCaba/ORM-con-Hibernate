@@ -69,7 +69,7 @@ public class JPA {
         session.close();
     }
     
-    public static void delete(Employee e) {
+    public static void deleteE(Employee e) {
         session = (Session) NewHibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         session.delete(e);
@@ -77,7 +77,7 @@ public class JPA {
         session.close();
     }
     
-    public static void delete(Phone e) {
+    public static void deletePh(Phone e) {
         session = (Session) NewHibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         session.delete(e);
@@ -85,7 +85,7 @@ public class JPA {
         session.close();
     }
     
-    public static void delete(Proyecto e) {
+    public static void deleteP(Proyecto e) {
         session = (Session) NewHibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         session.delete(e);

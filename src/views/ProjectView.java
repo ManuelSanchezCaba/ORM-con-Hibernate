@@ -9,6 +9,14 @@ package views;
 import entity.Employee;
 import entity.Proyecto;
 import java.math.BigDecimal;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import jpa.JPA;
+import jpa.NewHibernateUtil;
+import org.hibernate.Session;
 
 /**
  *
@@ -41,7 +49,7 @@ public class ProjectView extends javax.swing.JFrame {
         txtBudget = new javax.swing.JTextField();
         txtLeaderID = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TableProject = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -59,7 +67,7 @@ public class ProjectView extends javax.swing.JFrame {
 
         jLabel5.setText("LeaderID");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TableProject.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -67,7 +75,7 @@ public class ProjectView extends javax.swing.JFrame {
                 "ProjectID", "Type", "Name", "Budget", "LeaderID"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(TableProject);
 
         jButton1.setText("Agregar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -77,8 +85,18 @@ public class ProjectView extends javax.swing.JFrame {
         });
 
         jButton2.setText("Eliminar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("Modificar");
+        jButton3.setText("Ver");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Atras");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -164,13 +182,77 @@ public class ProjectView extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Proyecto p = new Proyecto();
-        p.setProjectid(new BigDecimal(txtProjectID.getText()));
-        p.setTipo(txtType.getText());
-        p.setNombre(txtName.getText());
-        p.setBudget(new BigDecimal(txtBudget.getText()));
-        p.setEmployee(new Employee().getEmployee());
+        try {
+            Proyecto p = new Proyecto();
+            p.setProjectid(new BigDecimal(txtProjectID.getText()));
+            p.setTipo(txtType.getText());
+            p.setNombre(txtName.getText());
+            p.setBudget(new BigDecimal(txtBudget.getText()));
+//            p.setEmployee(new Employee().getEmployee());
+
+            JPA.insert(p);
+
+            txtProjectID.setText("");
+            txtType.setText("");
+            txtName.setText("");
+            txtBudget.setText("");
+            txtLeaderID.setText("");
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        while(TableProject.getRowCount() != 0) {
+            ((DefaultTableModel)TableProject.getModel()).removeRow(0);
+        }
+        
+        Session session = (Session) NewHibernateUtil.getSessionFactory().openSession();
+        List<Proyecto> ad = session.createCriteria(Proyecto.class).list();
+        
+        if(ad.size() > 0) {
+            Iterator consulta = ad.iterator();
+            while(consulta.hasNext()) {
+                DefaultTableModel tbl = (DefaultTableModel) TableProject.getModel();
+                Vector datos = new Vector();
+                Proyecto fila = (Proyecto) consulta.next();
+                datos.add(fila.getProjectid());
+                datos.add(fila.getTipo());
+                datos.add(fila.getNombre());
+                datos.add(fila.getBudget());
+                datos.add(fila.getEmployee());
+                tbl.addRow(datos);
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "No hay registros");
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            Proyecto p = new Proyecto();
+            p.setProjectid(new BigDecimal(txtProjectID.getText()));
+            p.setTipo(txtType.getText());
+            p.setNombre(txtName.getText());
+            p.setBudget(new BigDecimal(txtBudget.getText()));
+//            p.setEmployee(new Employee().getEmployee());
+
+            JPA.deleteP(p);
+
+            txtProjectID.setText("");
+            txtType.setText("");
+            txtName.setText("");
+            txtBudget.setText("");
+            txtLeaderID.setText("");
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -208,6 +290,7 @@ public class ProjectView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable TableProject;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -218,7 +301,6 @@ public class ProjectView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField txtBudget;
     private javax.swing.JTextField txtLeaderID;
     private javax.swing.JTextField txtName;
